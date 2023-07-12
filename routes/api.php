@@ -1,6 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
+
+use App\Http\Controllers\ArticleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
+$res404 = fn() => response()->json(['message' => 'Not found'], 404);
+
+Route::get('/articles', [ArticleController::class, 'index']);
+Route::post('/articles', [ArticleController::class, 'create']);
+Route::patch('/articles/{article}', [ArticleController::class, 'update'])->missing($res404);
+Route::delete('/articles/{article}', [ArticleController::class, 'unPublishOrDelete'])->missing($res404);
